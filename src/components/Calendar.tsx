@@ -1,8 +1,8 @@
 import { weekDays } from "@/utils";
 import { Component, For } from "solid-js";
-import calendarBg from "@/assets/calendar-bg.jpg";
+// import calendarBg from "@/assets/calendar-bg.jpg";
 import { format, isSameMonth } from "date-fns";
-import { dateState, getDaysInMonth, getMonthName, monthEvents } from "@/states";
+import { dateState, getDaysInMonth, getMonthName } from "@/states";
 import { setEventForm } from "@/views/EventForm";
 
 const Calendar: Component = () => {
@@ -10,7 +10,7 @@ const Calendar: Component = () => {
     <>
       <div
         id="calendar-view"
-        class="w-full relative aspect-[1/0.8] bg-slate-600"
+        class="w-full relative aspect-[8.5/11] bg-slate-600"
       >
         {/* //aspect-[8.5/11] */}
         {/* <div class="absolute w-full h-full object-cover">
@@ -24,18 +24,32 @@ const Calendar: Component = () => {
             <section class="mt-4 w-full bg-gray-400/30 rounded-xl shadow-lg overflow-hidden">
               <section class="weekname grid grid-cols-7 text-center bg-gray-400/30 dark:bg-gray-800/40">
                 {weekDays.map((day) => (
-                  <div class="[&:not(:last-child)]:border-r border-gray-400/70 border-b  p-4">
-                    <p class="font-bold">{day.en}</p>
-                    <p class="font-extralight text-sm">{day.mm}</p>
+                  <div class="[&:not(:last-child)]:border-r border-gray-400/70 border-b p-2.5">
+                    <p class="font-bold text-sm">{day.en}</p>
+                    <p class="font-extralight text-xs">{day.mm}</p>
                   </div>
                 ))}
               </section>
               <section class="grid grid-cols-7 text-center">
                 <For each={getDaysInMonth()}>
                   {(day) => (
-                    <div class="h-24 px-2 py-1 border-b border-b-gray-400/70 [&:not(:nth-child(7n))]:border-r border-r-gray-400/70">
+                    <div
+                      onClick={() => {
+                        !day.events.length &&
+                          setEventForm({
+                            show: true,
+                            type: "create",
+                            event: {
+                              id: Date.now(),
+                              name: "",
+                              date: format(day.date, "yyyy-MM-dd"),
+                            },
+                          });
+                      }}
+                      class="h-[5.5rem] p-1.5 border-b border-b-gray-400/70 [&:not(:nth-child(7n))]:border-r border-r-gray-400/70"
+                    >
                       <p
-                        class={`text-right ${
+                        class={`text-right text-sm pr-0.5 pb-0.5 ${
                           isSameMonth(dateState(), day.date)
                             ? " text-black dark:text-white"
                             : "text-gray-400"
@@ -54,10 +68,12 @@ const Calendar: Component = () => {
                                   event,
                                 });
                               }}
-                              class="bg-red-400 text-[8px] leading-4 p-1 rounded-md w-full text-left text-white"
+                              class="bg-red-400 text-[8px] leading-4 px-1.5 py-1 rounded-md w-full text-left text-white"
                             >
-                              <strong>{event.name} </strong>
-                              <p>{event.description}</p>
+                              <p class="font-semibold">{event.name} </p>
+                              <p class="font-light text-[7px]">
+                                {event.description}
+                              </p>
                             </button>
                           )}
                         </For>

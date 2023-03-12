@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { monthEvents, setMonthEvents } from "@/states";
 import { $Storage } from "@/utils";
-import { Component, Show } from "solid-js";
+import { Component, Show, createEffect, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 
 type EventForm = {
@@ -27,10 +27,24 @@ const EventForm: Component<{}> = (props) => {
       },
     }));
   }
+  let closeBtn: HTMLButtonElement;
+  const handleEsc = (e) => {
+    e.code === "Escape" && closeForm();
+  };
+
+  createEffect(() => {
+    if (eventForm.show) {
+      closeBtn?.focus();
+      window.addEventListener("keydown", handleEsc);
+    } else {
+      window.removeEventListener("keydown", handleEsc);
+    }
+  });
 
   function closeForm() {
-    setEventForm({ show: false, type: "create" });
+    setEventForm({ show: false, type: "create", event: undefined });
   }
+
   return (
     <Show when={eventForm.show}>
       <section class="fixed inset-0 bg-black/30 z-50 grid place-items-center h-screen overflow-y-auto">
@@ -61,8 +75,10 @@ const EventForm: Component<{}> = (props) => {
               {eventForm.type === "create" ? "Add event" : "Edit event"}
             </h2>
             <button
-              class=" scale-y-75"
-              onClick={() => setEventForm((form) => ({ ...form, show: false }))}
+              accessKey="esc"
+              type="reset"
+              class="scale-y-75"
+              onClick={closeForm}
             >
               X
             </button>
@@ -86,6 +102,7 @@ const EventForm: Component<{}> = (props) => {
             type="date"
             onInput={handleChange}
           />
+
           <Show when={eventForm.type === "update"}>
             <Button
               class="w-full mt-5 text-red-500 border-current"
