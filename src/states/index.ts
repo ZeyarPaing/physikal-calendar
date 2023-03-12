@@ -1,4 +1,7 @@
-import { createSignal } from "solid-js";
+import { $Storage } from "@/utils";
+import { format, subDays } from "date-fns";
+import { createEffect, createSignal } from "solid-js";
+import { SetStoreFunction, createStore } from "solid-js/store";
 
 export const [dateState, setDateState] = createSignal(new Date());
 
@@ -18,22 +21,32 @@ export const switchMonth = (type: "next" | "prev") => {
   }
 };
 
-export const getDaysInMonth = () => {
+export const [monthEvents, setMonthEvents] = createStore<MonthEvents>(
+  $Storage.get("EVENTS") ?? {}
+);
+
+// export const updateMonthEvents = (
+//   ...args: Parameters<SetStoreFunction<MonthEvents>>
+// ) => {
+//   setMonthEvents(...args);
+// };
+
+export const getDaysInMonth = (): { date: Date; events: CEvent[] }[] => {
   const year = dateState().getFullYear();
   const month = dateState().getMonth();
   const date = new Date(year, month, 1);
-  let days: Date[] = [];
+  let calDays: { date: Date; events: CEvent[] }[] = [];
   let prevMonthDayLength = date.getDay();
   if (prevMonthDayLength) {
     let prevMonth = new Date(year, month, 1);
-    for (let i = 1; i < prevMonthDayLength + 1; i++) {
-      prevMonth.setDate(date.getDate() - i);
-      days.push(new Date(prevMonth));
+    for (let i = prevMonthDayLength; i >= 1; i--) {
+      calDays.push({ date: subDays(prevMonth, i), events: [] });
     }
   }
   while (date.getMonth() === month) {
-    days.push(new Date(date));
+    const events = monthEvents[format(date, "yyyy-MM-dd")];
+    calDays.push({ date: new Date(date), events: events ?? [] });
     date.setDate(date.getDate() + 1);
   }
-  return days;
+  return calDays;
 };

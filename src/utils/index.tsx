@@ -7,3 +7,26 @@ export const weekDays = [
   { en: "Fri", mm: "သောကြာ" },
   { en: "Sat", mm: "စနေ" },
 ];
+
+function serializer(key: string, value: unknown) {
+  if (value instanceof Map) {
+    return { __type: "Map", value: Object.fromEntries(value) };
+  }
+  return value;
+}
+
+function parser(key: string, value: unknown) {
+  if (value && value["__type"] === "Map") {
+    return new Map(Object.entries(value));
+  }
+  return value;
+}
+
+export const $Storage = {
+  store: (key: string, value: unknown) => {
+    localStorage.setItem(key, JSON.stringify(value, serializer));
+  },
+  get: (key: string) => {
+    return JSON.parse(localStorage.getItem(key), parser);
+  },
+};
