@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ES5","DOM", "DOM.Iterable"],
+    "lib": ["ES5", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"],
     "noEmit": true,
     "isolatedModules": true,
     "baseUrl": "src",
@@ -17,7 +16,5 @@
     },
     "typeRoots": ["./src/types"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
