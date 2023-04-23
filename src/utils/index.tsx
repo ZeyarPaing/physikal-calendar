@@ -9,7 +9,7 @@ export const weekDays = [
 ];
 
 export const colors = {
-  red: "rgb(248 113 113)",
+  red: "rgb(230 80 80)",
   green: "rgb(251 191 36)",
   blue: "rgb(59 130 246)",
 };

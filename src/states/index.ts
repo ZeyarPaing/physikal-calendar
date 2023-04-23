@@ -59,8 +59,8 @@ export function updateAllColors() {
   const events = $Storage.get("EVENTS") ?? {};
   const newEvents = Object.keys(events).reduce((acc, key) => {
     acc[key] = events[key].map((event: CEvent) => {
-      return event.color === "rgb(16 185 129)"
-        ? { ...event, color: "rgb(251 191 36)" }
+      return event.color === "rgb(248 113 113)"
+        ? { ...event, color: "rgb(230 80 80)" }
         : event;
     });
     return acc;
