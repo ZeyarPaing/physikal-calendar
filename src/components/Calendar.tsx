@@ -19,7 +19,10 @@ const Calendar: Component = () => {
   );
   return (
     <>
-      <div id="calendar-view" class="w-full relative aspect-[8/5] bg-slate-600">
+      <div
+        id="calendar-view"
+        class="w-full relative aspect-[8.5/11] bg-slate-600"
+      >
         {/* //aspect-[8.5/11] */}
         <div class="absolute w-full h-full object-cover">
           <img class="w-full h-full" src={calendarBg} alt="bg" />
