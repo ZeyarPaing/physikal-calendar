@@ -33,7 +33,8 @@ const Calendar: Component = () => {
             <h2 class="text-2xl">{dateState().getFullYear()}</h2>
             <h1 class="text-4xl font-bold">{getMonthName()}</h1>
             <section class="mt-4 w-full bg-calendar-bg rounded-xl shadow-lg overflow-hidden">
-              <section class="weekname grid grid-cols-7 text-center bg-gray-400/30 dark:bg-calendar-head">
+              {/* dark:bg-calendar-head */}
+              <section class="weekname grid grid-cols-7 text-center bg-black/30 ">
                 {weekDays.map((day) => (
                   <div class="[&:not(:last-child)]:border-r border-gray-400/70 border-b p-2.5">
                     <p class="font-bold text-sm">{day.en}</p>
