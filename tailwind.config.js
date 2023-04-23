@@ -25,7 +25,7 @@ module.exports = {
           DEFAULT: "#201818",
         },
         calendar: {
-          bg: "rgba(15,12,12,0.84)",
+          bg: "rgba(15,12,12,0.78)",
           head: "#4a262766",
         },
       },

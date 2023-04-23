@@ -30,9 +30,13 @@ const Calendar: Component = () => {
         {/* <div class="absolute w-full h-full dark:bg-black/30 bg-gray-200"></div> */}
         <div class="absolute w-full h-full flex flex-col justify-end">
           <section class="flex flex-col dark:text-white text-black p-10">
-            <h2 class="text-2xl">{dateState().getFullYear()}</h2>
-            <h1 class="text-4xl font-bold">{getMonthName()}</h1>
-            <section class="mt-4 w-full bg-calendar-bg rounded-xl shadow-lg overflow-hidden">
+            <div>
+              <span class="text-[2.1rem] mr-2 font-light">
+                {dateState().getFullYear()}{" "}
+              </span>
+              <span class="text-4xl font-bold">{getMonthName()}</span>
+            </div>
+            <section class="mt-3 w-full bg-calendar-bg rounded-xl shadow-lg overflow-hidden">
               {/* dark:bg-calendar-head */}
               <section class="weekname grid grid-cols-7 text-center bg-black/30 ">
                 {weekDays.map((day) => (
