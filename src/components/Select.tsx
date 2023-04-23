@@ -2,7 +2,7 @@ import { Component, For, JSX } from "solid-js";
 
 type Props = JSX.InputHTMLAttributes<HTMLSelectElement> & {
   label?: string;
-  menuItems: {
+  options: {
     label: string;
     value: string;
   }[];
@@ -16,8 +16,12 @@ const Select: Component<Props> = (props) => {
           class="w-full border border-gray-300 rounded-md px-3 py-2"
           {...props}
         >
-          <For each={props.menuItems}>
-            {(menu) => <option value={menu.value}>{menu.label}</option>}
+          <For each={props.options}>
+            {(menu) => (
+              <option selected={menu.value === props.value} value={menu.value}>
+                {menu.label}
+              </option>
+            )}
           </For>
         </select>
       </label>

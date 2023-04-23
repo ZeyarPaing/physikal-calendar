@@ -3,7 +3,10 @@ import { format, subDays } from "date-fns";
 import { createEffect, createSignal } from "solid-js";
 import { SetStoreFunction, createStore } from "solid-js/store";
 
-export const [dateState, setDateState] = createSignal(new Date());
+const currentDate = $Storage.get("CURRENT_DATE");
+export const [dateState, setDateState] = createSignal<Date>(
+  currentDate ? new Date(currentDate) : new Date()
+);
 
 export const getMonthName = () =>
   new Intl.DateTimeFormat("en-US", { month: "long" }).format(
@@ -19,6 +22,7 @@ export const switchMonth = (type: "next" | "prev") => {
   } else {
     setDateState(new Date(year, month - 1, 1));
   }
+  $Storage.store("CURRENT_DATE", dateState().toISOString());
 };
 
 export const [monthEvents, setMonthEvents] = createStore<MonthEvents>(
@@ -50,3 +54,18 @@ export const getDaysInMonth = (): { date: Date; events: CEvent[] }[] => {
   }
   return calDays;
 };
+
+export function updateAllColors() {
+  const events = $Storage.get("EVENTS") ?? {};
+  const newEvents = Object.keys(events).reduce((acc, key) => {
+    acc[key] = events[key].map((event: CEvent) => {
+      return event.color === "rgb(16 185 129)"
+        ? { ...event, color: "rgb(251 191 36)" }
+        : event;
+    });
+    return acc;
+  }, {} as MonthEvents);
+  console.log("newEvents: ", newEvents);
+  setMonthEvents(newEvents);
+  $Storage.store("EVENTS", newEvents);
+}

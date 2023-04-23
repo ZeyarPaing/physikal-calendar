@@ -7,8 +7,8 @@ type CEvent = {
   name: string;
   description?: string;
   date: string;
-  type?: string;
-  refLabel?: string;
+  type?: "normal" | "outline" | "reference";
+  refNumber?: string;
   color?: string;
 };
 type MonthEvents = {

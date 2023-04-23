@@ -8,6 +8,12 @@ export const weekDays = [
   { en: "Sat", mm: "စနေ" },
 ];
 
+export const colors = {
+  red: "rgb(248 113 113)",
+  green: "rgb(251 191 36)",
+  blue: "rgb(59 130 246)",
+};
+
 function serializer(key: string, value: unknown) {
   if (value instanceof Map) {
     return { __type: "Map", value: Object.fromEntries(value) };

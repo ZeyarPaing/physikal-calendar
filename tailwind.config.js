@@ -24,6 +24,10 @@ module.exports = {
         dark: {
           DEFAULT: "#201818",
         },
+        calendar: {
+          bg: "rgba(25,22,22,0.74)",
+          head: "#4a262766",
+        },
       },
     },
   },

@@ -1,6 +1,11 @@
 import ChevronRight from "@/assets/chevron-right";
 import Calendar from "@/components/Calendar";
-import { getMonthName, switchMonth, dateState } from "@/states";
+import {
+  getMonthName,
+  switchMonth,
+  dateState,
+  updateAllColors,
+} from "@/states";
 import { Component, createSignal } from "solid-js";
 import { toPng } from "html-to-image";
 import Button from "@/components/Button";
@@ -76,6 +81,7 @@ const Home: Component = () => {
       >
         Export
       </Button>
+      {/* <button onClick={updateAllColors}>Update color</button> */}
     </section>
   );
 };
