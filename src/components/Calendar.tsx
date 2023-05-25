@@ -1,6 +1,13 @@
 import { colors, weekDays } from "@/utils";
-import { Component, For, Show, createMemo } from "solid-js";
-import calendarBg from "@/assets/sample.jpeg";
+import {
+  Component,
+  For,
+  Show,
+  createEffect,
+  createMemo,
+  createSignal,
+} from "solid-js";
+import calendarBg from "@/assets/bg/March.jpg";
 import { format, isSameMonth } from "date-fns";
 import {
   dateState,
@@ -9,7 +16,23 @@ import {
   updateAllColors,
 } from "@/states";
 import { setEventForm } from "@/views/EventForm";
-import { events } from "@/data.mock";
+import { events, qoutes } from "@/data.mock";
+let handler = null;
+async function getImageUrl(name) {
+  clearTimeout(handler);
+  return await new Promise<Promise<HTMLImageElement>>((resolve, reject) => {
+    handler = setTimeout(() => {
+      const url = new URL(`../assets/bg/${name}.jpg`, import.meta.url).href;
+      let img: Promise<HTMLImageElement> = new Promise((resolve, reject) => {
+        let image = new Image();
+        image.src = url;
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error("could not load image"));
+      });
+      resolve(img);
+    }, 200);
+  });
+}
 
 const Calendar: Component = () => {
   const references = createMemo(() =>
@@ -17,6 +40,14 @@ const Calendar: Component = () => {
       d.events.filter((e) => e.type === "reference")
     )
   );
+  const [img, setImg] = createSignal<HTMLImageElement>(null);
+
+  createEffect(() => {
+    getImageUrl(getMonthName()).then((image) => {
+      console.log("image : ", image);
+      setImg(image);
+    });
+  });
   return (
     <>
       <div
@@ -25,18 +56,41 @@ const Calendar: Component = () => {
       >
         {/* //aspect-[8.5/11] */}
         <div class="absolute w-full h-full object-cover">
-          <img class="w-full h-full" src={calendarBg} alt="bg" />
+          {img}
+          {/* <img
+            class="w-full h-full aspect-[8.5/11] "
+            src={getImageUrl(getMonthName())}
+            loading="lazy"
+            decoding="async"
+            alt="bg"
+          /> */}
         </div>
         {/* <div class="absolute w-full h-full dark:bg-black/30 bg-gray-200"></div> */}
         <div class="absolute w-full h-full flex flex-col justify-end">
           <section class="flex flex-col dark:text-white text-black p-10">
-            <div>
-              <span class="text-[2.1rem] mr-2 font-light">
-                {dateState().getFullYear()}{" "}
-              </span>
-              <span class="text-4xl font-bold">{getMonthName()}</span>
+            <div class="flex justify-between items-center">
+              <div
+                class="text-xl text-yellow-300 max-w-[65%] leading-8"
+                style={{
+                  "font-family": "Myanmar Handwriting",
+                }}
+              >
+                “{qoutes[getMonthName()].text}”
+                <Show when={qoutes[getMonthName()].author}>
+                  <br />
+                  <span class="block text-base text-red-500 mt-2">
+                    ({qoutes[getMonthName()].author})
+                  </span>
+                </Show>
+              </div>
+              <div>
+                <span class="text-[2.1rem] mr-2 font-light">
+                  {dateState().getFullYear()}{" "}
+                </span>
+                <span class="text-4xl font-bold">{getMonthName()}</span>
+              </div>
             </div>
-            <section class="mt-3 w-full bg-calendar-bg rounded-xl shadow-lg overflow-hidden">
+            <section class="mt-3 w-full border border-gray-400/70 bg-calendar-bg rounded-xl shadow-lg overflow-hidden">
               {/* dark:bg-calendar-head */}
               <section class="weekname grid grid-cols-7 text-center bg-black/30 ">
                 {weekDays.map((day) => (

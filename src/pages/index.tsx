@@ -7,7 +7,7 @@ import {
   updateAllColors,
 } from "@/states";
 import { Component, createSignal } from "solid-js";
-import { toPng } from "html-to-image";
+import { toJpeg, toPng } from "html-to-image";
 import Button from "@/components/Button";
 import EventForm, { setEventForm } from "@/views/EventForm";
 
@@ -66,13 +66,13 @@ const Home: Component = () => {
         loading={isExporting()}
         onClick={() => {
           setExproting(true);
-          toPng(document.getElementById("calendar-view"), {
+          toJpeg(document.getElementById("calendar-view"), {
             quality: 1,
             canvasWidth: 2550,
             canvasHeight: 3300,
           }).then(function (dataUrl) {
             const link = document.createElement("a");
-            link.download = `${dateState().getFullYear()}-${getMonthName()}.png`;
+            link.download = `${dateState().getFullYear()}-${getMonthName()}.jpg`;
             link.href = dataUrl;
             link.click();
             setExproting(false);
