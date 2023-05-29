@@ -68,8 +68,8 @@ const Home: Component = () => {
           setExproting(true);
           toJpeg(document.getElementById("calendar-view"), {
             quality: 1,
-            canvasWidth: 2550,
-            canvasHeight: 3300,
+            canvasWidth: 5100,
+            canvasHeight: 6600,
           }).then(function (dataUrl) {
             const link = document.createElement("a");
             link.download = `${dateState().getFullYear()}-${getMonthName()}.jpg`;
